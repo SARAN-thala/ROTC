@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metadata-config
+data:
+  version: "10.10"
+  mongodb_uri: mongodb://mongo/metadata

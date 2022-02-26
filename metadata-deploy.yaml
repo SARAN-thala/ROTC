@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metadataservice
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: metadata-pod
+  template:
+    metadata:
+      labels:
+        app: metadata-pod
+    spec:
+      containers:
+        - name: metadata-pod
+          image: sunitparekh/metadata:v2.0
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: metadata-config
+                  key: mongodb_uri
+            - name: VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: metadata-config
+                  key: version
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/info
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 3

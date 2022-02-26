@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: metadataservice
+  labels:
+    app: metadataservice
+spec:
+  containers:
+    - name: metadata
+      image: sunitparekh/metadata:v1.0
+      ports:
+        - containerPort: 8080
